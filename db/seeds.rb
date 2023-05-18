@@ -9,4 +9,4 @@
 Pet.destroy_all
 Shelter.destroy_all
 Veterinarian.destroy_all
-VeterinarianOffice.destroy_all
+VeterinaryOffice.destroy_all
