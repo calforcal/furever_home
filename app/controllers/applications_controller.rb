@@ -1,6 +1,9 @@
 class ApplicationsController < ApplicationController
   def show
     @application = Application.find(params[:app_id])
+    if params[:app_status] == "In Progress"
+      @application.status = "In Progress"
+    end
   end
 
   def new
