@@ -1,5 +1,5 @@
 class ApplicationsController < ApplicationController
   def show
-    @applications = Application.all
+    @application = Application.find(params[:app_id])
   end
 end
