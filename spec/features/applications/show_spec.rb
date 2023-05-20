@@ -29,7 +29,7 @@ RSpec.describe "the applications show page" do
   end
 
   it "has ability to add a pet to the application via search" do
-    visit "/applications/#{application.id}"
+    visit "/applications/#{application_2.id}"
 
     expect(page).to have_content("Add a Pet to this Application")
     save_and_open_page
@@ -38,5 +38,14 @@ RSpec.describe "the applications show page" do
     click_on("Search")
 
     expect(page).to have_content(pet.name)
+    expect(page).to have_button("Adopt this Pet")
+
+    click_button("Adopt this Pet")
+
+    expect(current_path).to eq("/applications/#{application_2.id}")
+    
+    within "#applying_for-pet" do
+      expect(page).to have_link("/pets/#{pet.id}")
+    end
   end
 end
