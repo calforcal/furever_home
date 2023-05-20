@@ -17,7 +17,7 @@ RSpec.describe "/applications/new" do
     fill_in "Description", with: "I believe there can never be too many cats"
 
     # save_and_open_page
-    click_button "Submit"
+    click_on "Submit"
 
     expect(current_path).to eq("/applications/#{Application.last.id}")
     expect(page).to have_content("Paul McCartney")
