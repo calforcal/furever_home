@@ -1,10 +1,10 @@
-<h1><%= @application.name %></h1>
+<h1>Name: <%= @application.name %></h1>
 <p>Address: <%= @application.street_address %> <%= @application.city %>, <%= @application.state %> <%= @application.zip_code %></p>
 <p>Description: <%= @application.description %></p>
-<p>Status: <%= @application.status %></p>
+<p>Status: <%= binding.pry @application.status %></p>
 
 <h4>Pets applying for:</h4>
-<% @application.pets.each do |pet| %>
-  <p>Pet Name: <%= pet.name %></p>
+<% @pets.each do |pet| %>
+  <%= link_to pet.name, "/pets/#{pet.id}" %>
 <% end %> 
 

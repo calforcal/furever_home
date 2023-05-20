@@ -16,6 +16,10 @@ RSpec.describe "the applications show page" do
     expect(page).to have_content("Description: #{application.description}")
     expect(page).to have_content("Status: #{application.status}")
     expect(page).to have_content("Pets applying for:")
-    expect(page).to have_content("Pet Name: #{pet.name}")
+    expect(page).to have_content("#{pet.name}")
+
+    click_on(pet.name)
+
+    expect(current_path).to eq("/pets/#{pet.id}")
   end
 end
