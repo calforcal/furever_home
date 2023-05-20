@@ -21,4 +21,4 @@ pet_2 = Pet.create!(adoptable: true, age: 3, breed: "doberman", name: "Lobster",
 
 application = Application.create!(name: "Ringo Starr", street_address: "123 Canyon Blvd.", city: "Boulder", state: "CO", zip_code: "80304", description: "I just love pets so much!", status: "In Progress")
 
-
+PetApplication.create!(pet: pet, application: application)
