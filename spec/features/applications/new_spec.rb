@@ -28,4 +28,17 @@ RSpec.describe "/applications/new" do
     expect(page).to have_content("I believe there can never be too many cats")
     expect(page).to have_content("In Progress")
   end
+
+  it "can display error messages when the form is incomplete" do
+    visit "/applications/new"
+
+    fill_in "Name", with: "Paul McCartney"
+    fill_in "Street address", with: "435 Hollywood St"
+    fill_in "City", with: "Los Angelos"
+
+    click_on "Submit"
+
+    expect(page).to have_content("Error: State can't be blank, Zip code can't be blank, Description can't be blank")
+    expect(current_path).to eq("/applications/new")
+  end
 end
