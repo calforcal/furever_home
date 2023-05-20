@@ -7,6 +7,7 @@ RSpec.describe "/applications/new" do
 
   it "can create a new application" do
     visit "/applications/new"
+    expect(page).to have_content("New Application")
     
     fill_in "Name", with: "Paul McCartney"
     fill_in "Street address", with: "435 Hollywood St"
