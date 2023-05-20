@@ -4,7 +4,7 @@ class ApplicationsController < ApplicationController
     @pets = @application.pets
 
     if params[:search]
-      @found_pets = Pet.search(params[:search])
+      @found_pets = Pet.search(params[:search]).adoptable
     end
   end
 
