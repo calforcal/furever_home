@@ -3,12 +3,14 @@ require "rails_helper"
 RSpec.describe "the applications show page" do
 
   let!(:shelter) { Shelter.create!(name: "Mystery Building", city: "Irvine CA", foster_program: false, rank: 9) }
+  
   let!(:pet) { shelter.pets.create!(name: "Scooby", age: 2, breed: "Great Dane", adoptable: true) }
+  let!(:pet_2) { shelter.pets.create!(name: "Buddy", age: 2, breed: "Bulldog", adoptable: true) }
+  
   let!(:application) { Application.create!(name: "Ringo Starr", street_address: "123 Canyon Blvd.", city: "Boulder", state: "CO", zip_code: "80304", description: "I just love pets so much!", status: "In Progress") }
   let!(:application_2) { Application.create!(name: "MC Callahan", street_address: "125 Kingsland Blvd.", city: "Brooklyn", state: "NY", zip_code: "11222", description: "I just hate pets so much!", status: "In Progress") }
   let!(:application_3) { Application.create!(name: "Mr Test", street_address: "125 Kingsland Blvd.", city: "Brooklyn", state: "NY", zip_code: "11222", status: "In Progress") }
-  let!(:pet_2) { shelter.pets.create!(name: "Buddy", age: 2, breed: "Bulldog", adoptable: true) }
-
+  
   let!(:petapp_1) { PetApplication.create!(pet: pet, application: application)}
   let!(:petapp_2) { PetApplication.create!(pet: pet_2, application: application_3)}
 
@@ -46,7 +48,7 @@ RSpec.describe "the applications show page" do
     click_button("Adopt this Pet")
 
     expect(current_path).to eq("/applications/#{application_2.id}")
-    save_and_open_page
+
     within "#pet-#{pet.id}" do
       expect(page).to have_link("#{pet.name}")
     end
@@ -54,7 +56,7 @@ RSpec.describe "the applications show page" do
 
   it "can submit an application and update its status after a pet has been added" do
     visit "/applications/#{application_3.id}"
-    save_and_open_page
+    # save_and_open_page
     expect(page).to have_content("Status: In Progress")
 
     within ".applying-for" do
@@ -77,5 +79,14 @@ RSpec.describe "the applications show page" do
 
     expect(page).to_not have_field(:search)
     expect(page).to_not have_button("Adopt this Pet")
+  end
+
+  it "does not show a submit application buttton if no pets have been added" do
+    visit "/applications/#{application_2.id}"
+    
+    expect(page).to_not have_button("Submit Application")
+    expect(page).to have_content("Status: In Progress")
+    expect(page).to_not have_link("#{pet_2.name}")
+    expect(page).to_not have_link("#{pet.name}")
   end
 end
