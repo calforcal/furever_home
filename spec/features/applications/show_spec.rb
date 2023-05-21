@@ -7,7 +7,7 @@ RSpec.describe "the applications show page" do
   let!(:pet) { shelter.pets.create!(name: "Scooby", age: 2, breed: "Great Dane", adoptable: true) }
   let!(:pet_2) { shelter.pets.create!(name: "Buddy", age: 2, breed: "Bulldog", adoptable: true) }
   let!(:pet_3) {shelter.pets.create!(name: "Scooter", breed: "Poodle", adoptable: true, age: 10,  shelter_id: shelter.id)}
-  let!(:pet_4) {shelter.pets.create!(name: "Sir Scoots", breed: "Mix", adoptable: true, age: 4,  shelter_id: shelter.id)}
+  let!(:pet_4) {shelter.pets.create!(name: "Sir ScOOts", breed: "Mix", adoptable: true, age: 4,  shelter_id: shelter.id)}
 
   let!(:application) { Application.create!(name: "Ringo Starr", street_address: "123 Canyon Blvd.", city: "Boulder", state: "CO", zip_code: "80304", description: "I just love pets so much!", status: "In Progress") }
   let!(:application_2) { Application.create!(name: "MC Callahan", street_address: "125 Kingsland Blvd.", city: "Brooklyn", state: "NY", zip_code: "11222", description: "I just hate pets so much!", status: "In Progress") }
@@ -96,6 +96,34 @@ RSpec.describe "the applications show page" do
     visit "/applications/#{application_2.id}"
 
     fill_in "Search", with: "Scoot"
+    click_on("Search")
+
+    expect(page).to_not have_content(pet.name)
+    expect(page).to_not have_content(pet_2.name)
+    expect(page).to have_content(pet_3.name)
+    expect(page).to have_content(pet_4.name)
+  end
+
+  it "allows user to do case insensitive searches" do
+    visit "/applications/#{application_2.id}"
+
+    fill_in "Search", with: "scoot"
+    click_on("Search")
+
+    expect(page).to_not have_content(pet.name)
+    expect(page).to_not have_content(pet_2.name)
+    expect(page).to have_content(pet_3.name)
+    expect(page).to have_content(pet_4.name)
+
+    fill_in "Search", with: "SCOOt"
+    click_on("Search")
+
+    expect(page).to_not have_content(pet.name)
+    expect(page).to_not have_content(pet_2.name)
+    expect(page).to have_content(pet_3.name)
+    expect(page).to have_content(pet_4.name)
+
+    fill_in "Search", with: "ScOoT"
     click_on("Search")
 
     expect(page).to_not have_content(pet.name)
