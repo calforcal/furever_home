@@ -23,5 +23,7 @@ pet_4 = Pet.create!(name: "Sir ScOOts", breed: "Mix", adoptable: true, age: 4,  
 pet_5 = Pet.create!(name: "Mister FLUFFball", breed: "border collie", adoptable: true, age: 3,  shelter_id: shelter.id)
 
 application = Application.create!(name: "Ringo Starr", street_address: "123 Canyon Blvd.", city: "Boulder", state: "CO", zip_code: "80304", description: "I just love pets so much!", status: "In Progress")
-
+application_2 = Application.create!(name: "MC Callahan", street_address: "125 Kingsland Blvd.", city: "Brooklyn", state: "NY", zip_code: "11222", description: "I just hate pets so much!", status: "In Progress")
+application_3 = Application.create!(name: "Mr Test", street_address: "125 Kingsland Blvd.", city: "Brooklyn", state: "NY", zip_code: "11222", status: "In Progress")
+  
 PetApplication.create!(pet: pet, application: application)
