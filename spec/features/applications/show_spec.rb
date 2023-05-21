@@ -6,7 +6,9 @@ RSpec.describe "the applications show page" do
   
   let!(:pet) { shelter.pets.create!(name: "Scooby", age: 2, breed: "Great Dane", adoptable: true) }
   let!(:pet_2) { shelter.pets.create!(name: "Buddy", age: 2, breed: "Bulldog", adoptable: true) }
-  
+  let!(:pet_3) {shelter.pets.create!(name: "Scooter", breed: "Poodle", adoptable: true, age: 10,  shelter_id: shelter.id)}
+  let!(:pet_4) {shelter.pets.create!(name: "Sir Scoots", breed: "Mix", adoptable: true, age: 4,  shelter_id: shelter.id)}
+
   let!(:application) { Application.create!(name: "Ringo Starr", street_address: "123 Canyon Blvd.", city: "Boulder", state: "CO", zip_code: "80304", description: "I just love pets so much!", status: "In Progress") }
   let!(:application_2) { Application.create!(name: "MC Callahan", street_address: "125 Kingsland Blvd.", city: "Brooklyn", state: "NY", zip_code: "11222", description: "I just hate pets so much!", status: "In Progress") }
   let!(:application_3) { Application.create!(name: "Mr Test", street_address: "125 Kingsland Blvd.", city: "Brooklyn", state: "NY", zip_code: "11222", status: "In Progress") }
@@ -88,5 +90,17 @@ RSpec.describe "the applications show page" do
     expect(page).to have_content("Status: In Progress")
     expect(page).to_not have_link("#{pet_2.name}")
     expect(page).to_not have_link("#{pet.name}")
+  end
+
+  it "allows user to search for partial names of pets" do
+    visit "/applications/#{application_2.id}"
+
+    fill_in "Search", with: "Scoot"
+    click_on("Search")
+
+    expect(page).to_not have_content(pet.name)
+    expect(page).to_not have_content(pet_2.name)
+    expect(page).to have_content(pet_3.name)
+    expect(page).to have_content(pet_4.name)
   end
 end
