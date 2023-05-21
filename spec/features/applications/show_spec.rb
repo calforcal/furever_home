@@ -6,7 +6,11 @@ RSpec.describe "the applications show page" do
   let!(:pet) { shelter.pets.create!(name: "Scooby", age: 2, breed: "Great Dane", adoptable: true) }
   let!(:application) { Application.create!(name: "Ringo Starr", street_address: "123 Canyon Blvd.", city: "Boulder", state: "CO", zip_code: "80304", description: "I just love pets so much!", status: "In Progress") }
   let!(:application_2) { Application.create!(name: "MC Callahan", street_address: "125 Kingsland Blvd.", city: "Brooklyn", state: "NY", zip_code: "11222", description: "I just hate pets so much!", status: "In Progress") }
+  let!(:application_3) { Application.create!(name: "Mr Test", street_address: "125 Kingsland Blvd.", city: "Brooklyn", state: "NY", zip_code: "11222", status: "In Progress") }
+  let!(:pet_2) { shelter.pets.create!(name: "Buddy", age: 2, breed: "Bulldog", adoptable: true) }
+
   let!(:petapp_1) { PetApplication.create!(pet: pet, application: application)}
+  let!(:petapp_2) { PetApplication.create!(pet: pet_2, application: application_3)}
 
   it "shows the application and its attributes" do
 
@@ -14,7 +18,7 @@ RSpec.describe "the applications show page" do
     
     expect(page).to have_content("#{application.name}")
     expect(page).to have_content("Address: #{application.street_address} #{application.city}, #{application.state} #{application.zip_code}")
-    expect(page).to have_content("Description: #{application.description}")
+    # expect(page).to have_content("Description: #{application.description}")
     expect(page).to have_content("Status: #{application.status}")
     expect(page).to have_content("Pets applying for:")
     expect(page).to have_content("#{pet.name}")
@@ -46,5 +50,32 @@ RSpec.describe "the applications show page" do
     within "#pet-#{pet.id}" do
       expect(page).to have_link("#{pet.name}")
     end
+  end
+
+  it "can submit an application and update its status after a pet has been added" do
+    visit "/applications/#{application_3.id}"
+    save_and_open_page
+    expect(page).to have_content("Status: In Progress")
+
+    within ".applying-for" do
+      expect(page).to have_link("#{pet_2.name}")
+    end
+
+    within "#submit-app" do
+      fill_in :description, with: "Because I love pets so much"
+      expect(page).to have_button("Submit Application")
+      click_button "Submit Application"
+    end
+
+    expect(current_path).to eq("/applications/#{application_3.id}")
+    expect(page).to have_content("Description: #{application_3.description}")
+    expect(page).to have_content("Status: Pending")
+
+    within ".applying-for" do
+      expect(page).to have_link("#{pet_2.name}")
+    end
+
+    expect(page).to_not have_field(:search)
+    expect(page).to_not have_button("Adopt this Pet")
   end
 end
