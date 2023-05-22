@@ -20,6 +20,10 @@ class Shelter < ApplicationRecord
     find_by_sql("SELECT * FROM shelters ORDER BY shelters.name desc;")
   end
 
+  def self.filter_status(type)
+    joins(pets: :applications).where("applications.status = '#{type}'").pluck(:name)
+  end
+
   def pet_count
     pets.count
   end
