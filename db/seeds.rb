@@ -14,6 +14,8 @@ VeterinaryOffice.destroy_all
 Application.destroy_all
 
 shelter = Shelter.create!(name: "Aurora shelter", city: "Aurora, CO", foster_program: false, rank: 9)
+shelter_2 = Shelter.create(name: "RGV animal shelter", city: "Harlingen, TX", foster_program: false, rank: 5)
+shelter_3 = Shelter.create(name: "Fancy pets of Colorado", city: "Denver, CO", foster_program: true, rank: 10)
 
 pet   = Pet.create!(name: "Scooby", age: 2, breed: "Great Dane", adoptable: true, shelter_id: shelter.id)
 pet_1 = Pet.create!(name: "Lucille Bald", breed: "sphynx", adoptable: true, age: 1, shelter_id: shelter.id)
