@@ -29,7 +29,7 @@ RSpec.describe "/admin/shelters, admin index page", type: :feature do
     expect(page).to have_content("Shelters with Pending Applications")
     
     within "#pending-apps" do
-      save_and_open_page
+      # save_and_open_page
       expect(page).to have_content(shelter_1.name)
       expect(page).to_not have_content(shelter_2.name)
     end
