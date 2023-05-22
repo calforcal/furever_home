@@ -1,6 +1,13 @@
 <h1>All Shelters</h1>   
 <ul>
-  <% @shelters.each do |shelter| %>
+  <% @shelters.reverse_alpha.each do |shelter| %>
     <li><%= shelter.name %></li>
   <% end %>
 </ul>
+
+<h2>Shelters with Pending Applications</h2>
+  <ul id="pending-apps">
+    <% @shelters.filter_status('Pending').each do |shelter| %>
+    <li> <%= shelter %> </li>
+    <% end %>
+  </ul>
