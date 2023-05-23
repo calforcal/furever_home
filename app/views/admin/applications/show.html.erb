@@ -1,0 +1,14 @@
+<h1>Name: <%= @application.name %></h1>
+<p>Address: <%= @application.street_address %> <%= @application.city %>, <%= @application.state %> <%= @application.zip_code %></p>
+<p>Status: <%= @application.status %></p>
+<p>Description: <%= @application.description %></p>
+<h4>Pets applying for:</h4>
+<% @application.pets.each do |pet| %>
+  <% if @application.status == "Pending" && params[:pet_id].to_i == pet.id %>
+    <p class="applying-for"><%= link_to pet.name, "/pets/#{pet.id}" %></p>
+    <p><%= pet.name %> Approved for Adoption</p>
+  <% else %>
+    <p class="applying-for"><%= link_to pet.name, "/pets/#{pet.id}" %></p>
+    <%= button_to "Approve Application for #{pet.name}", "/admin/applications/#{@application.id}", params: {pet_id: pet.id}, method: :get %>
+  <% end %>
+<% end %>
