@@ -18,14 +18,17 @@ RSpec.describe "/admin/applications/:id, admin-show page" do
 
       visit "/admin/applications/#{application.id}"
       save_and_open_page
-      within ".applying-for" do
+      within "#applying-for-#{pet_1.id}" do
         expect(page).to have_link("#{pet_1.name}")
         expect(page).to have_button("Approve Application for #{pet_1.name}")
         click_button("Approve Application for #{pet_1.name}")
       end
       
       expect(current_path).to eq("/admin/applications/#{application.id}")
-      expect(page).to_not have_button("Approve Application for #{pet_1.name}")
-      expect(page).to have_content("#{pet_1.name} Approved for Adoption")
+      
+      within "#approved-for-#{pet_1.id}" do
+        expect(page).to_not have_button("Approve Application for #{pet_1.name}")
+        expect(page).to have_content("#{pet_1.name} Approved for Adoption")
+      end
     end
 end
