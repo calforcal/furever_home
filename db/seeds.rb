@@ -29,3 +29,6 @@ application_2 = Application.create!(name: "MC Callahan", street_address: "125 Ki
 application_3 = Application.create!(name: "Mr Test", street_address: "125 Kingsland Blvd.", city: "Brooklyn", state: "NY", zip_code: "11222", status: "In Progress")
   
 PetApplication.create!(pet: pet, application: application)
+
+office = VeterinaryOffice.create!(name: "Tanner's Boat", max_patient_capacity: 10, boarding_services: false)
+vet = office.veterinarians.create!(name: "Tanner Lipsky", on_call: true, review_rating: 5)
