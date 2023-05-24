@@ -2,6 +2,6 @@ class PetApplication < ApplicationRecord
   belongs_to :pet
   belongs_to :application
 
-  validates_presence_of :pet_status
+  validates_presence_of :pet_status, :pet_id, :application_id
   validates_numericality_of :pet_id, :application_id
 end
