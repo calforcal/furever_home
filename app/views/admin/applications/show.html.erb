@@ -4,11 +4,19 @@
 <p>Description: <%= @application.description %></p>
 <h4>Pets applying for:</h4>
 <% @application.pets.each do |pet| %>
-  <% if @application.status == "Pending" && params[:pet_id].to_i == pet.id %>
-    <p id="approved-for-<%= pet.id %>"><%= link_to pet.name, "/pets/#{pet.id}" %></p>
-    <p><%= pet.name %> Approved for Adoption</p>
-  <% else %>
-    <p id="applying-for-<%= pet.id %>"><%= link_to pet.name, "/pets/#{pet.id}" %></p>
-    <%= button_to "Approve Application for #{pet.name}", "/admin/applications/#{@application.id}", params: {pet_id: pet.id}, method: :get %>
+  <% pet_app = @application.find_pet_app(pet.id) %>
+  <% if pet_app.pet_status == "Pending Adoption" %>
+    <div id="applying-for-<%= pet.id %>">
+      <%= link_to pet.name, "/pets/#{pet.id}" %>
+      <%= form_with url: "/pet_applications/#{pet_app.id}", local: true, method: :patch do |form| %>
+        <%= form.hidden_field :pet_status, value: "Approved" %>
+        <%= form.submit "Approve Application for #{pet.name}" %>
+      <% end %>
+    </div>
+  <% elsif pet_app.pet_status == "Approved" %>
+    <div id="approved-for-<%= pet.id %>">
+      <%= link_to pet.name, "/pets/#{pet.id}" %>
+      <p><%= pet_app.pet_status %> for Adoption</p>
+    </div>
   <% end %>
 <% end %>
