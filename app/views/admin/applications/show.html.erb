@@ -1,7 +1,6 @@
-<h1>Name: <%= @application.name %></h1>
-<p>Address: <%= @application.street_address %> <%= @application.city %>, <%= @application.state %> <%= @application.zip_code %></p>
-<p>Status: <%= @application.status %></p>
+<%= render "shared/app_details" %>
 <p>Description: <%= @application.description %></p>
+
 <h4>Pets applying for:</h4>
 <% @application.pets.each do |pet| %>
   <% pet_app = @application.find_pet_app(pet.id) %>
