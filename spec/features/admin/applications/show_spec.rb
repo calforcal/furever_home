@@ -27,9 +27,30 @@ RSpec.describe "/admin/applications/:id, admin-show page" do
       
       expect(current_path).to eq("/admin/applications/#{application.id}")
 
-      within "#approved-for-#{pet_1.id}" do
+      within "#decision-for-#{pet_1.id}" do
         expect(page).to_not have_button("Approve Application for #{pet_1.name}")
         expect(page).to have_content("Approved for Adoption")
+      end
+    end
+
+    it "Admin can reject a pet application for each pet applied for" do
+
+      visit "/admin/applications/#{application.id}"
+
+      within "#applying-for-#{pet_1.id}" do
+        expect(page).to have_link("#{pet_1.name}")
+        expect(page).to have_button("Approve Application for #{pet_1.name}")
+        expect(page).to have_button("Reject Application for #{pet_1.name}")
+      end
+      
+      find("#applying-for-#{pet_1.id}").click_button("Reject Application for #{pet_1.name}")
+      
+      expect(current_path).to eq("/admin/applications/#{application.id}")
+
+      within "#decision-for-#{pet_1.id}" do
+        expect(page).to_not have_button("Reject Application for #{pet_1.name}")
+        expect(page).to_not have_button("Approve Application for #{pet_1.name}")
+        expect(page).to have_content("Rejected for Adoption")
       end
     end
 end

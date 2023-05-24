@@ -12,9 +12,13 @@
         <%= form.hidden_field :pet_status, value: "Approved" %>
         <%= form.submit "Approve Application for #{pet.name}" %>
       <% end %>
+      <%= form_with url: "/pet_applications/#{pet_app.id}", local: true, method: :patch do |form| %>
+        <%= form.hidden_field :pet_status, value: "Rejected" %>
+        <%= form.submit "Reject Application for #{pet.name}" %>
+      <% end %>
     </div>
-  <% elsif pet_app.pet_status == "Approved" %>
-    <div id="approved-for-<%= pet.id %>">
+  <% elsif pet_app.pet_status == "Approved" || pet_app.pet_status == "Rejected" %>
+    <div id="decision-for-<%= pet.id %>">
       <%= link_to pet.name, "/pets/#{pet.id}" %>
       <p><%= pet_app.pet_status %> for Adoption</p>
     </div>
