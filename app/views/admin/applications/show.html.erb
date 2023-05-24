@@ -1,21 +1,25 @@
-<h1>Name: <%= @application.name %></h1>
-<p>Address: <%= @application.street_address %> <%= @application.city %>, <%= @application.state %> <%= @application.zip_code %></p>
-<p>Status: <%= @application.status %></p>
+<%= render "shared/app_details" %>
 <p>Description: <%= @application.description %></p>
+
 <h4>Pets applying for:</h4>
 <% @application.pets.each do |pet| %>
   <% pet_app = @application.find_pet_app(pet.id) %>
   <% if pet_app.pet_status == "Pending Adoption" %>
     <div id="applying-for-<%= pet.id %>">
       <%= link_to pet.name, "/pets/#{pet.id}" %>
-      <%= form_with url: "/pet_applications/#{pet_app.id}", local: true, method: :patch do |form| %>
-        <%= form.hidden_field :pet_status, value: "Approved" %>
-        <%= form.submit "Approve Application for #{pet.name}" %>
-      <% end %>
-      <%= form_with url: "/pet_applications/#{pet_app.id}", local: true, method: :patch do |form| %>
-        <%= form.hidden_field :pet_status, value: "Rejected" %>
-        <%= form.submit "Reject Application for #{pet.name}" %>
-      <% end %>
+      <%= render partial: 'form', locals: { 
+                                            path: "/pet_applications/#{pet_app.id}",
+                                            method: :patch,
+                                            value: "Approved",
+                                            button_text: "Approve Application for #{pet.name}"
+      } %>
+
+      <%= render partial: 'form', locals: { 
+                                            path: "/pet_applications/#{pet_app.id}",
+                                            method: :patch,
+                                            value: "Rejected",
+                                            button_text: "Reject Application for #{pet.name}"
+      } %>
     </div>
   <% elsif pet_app.pet_status == "Approved" || pet_app.pet_status == "Rejected" %>
     <div id="decision-for-<%= pet.id %>">

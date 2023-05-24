@@ -44,11 +44,5 @@ RSpec.describe Pet, type: :model do
         expect(@pet_3.shelter_name).to eq(@shelter_1.name)
       end
     end
-
-    describe "#available_for_adoption" do
-      it "returns all pets that haven't been already been approved on another application" do
-        pet_app1 = PetApplication.create!(pet: @pet_1, application: @app_1, pet_status: "Approved")
-      end
-    end
   end
 end

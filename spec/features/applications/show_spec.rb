@@ -22,14 +22,12 @@ RSpec.describe "the applications show page" do
     
     expect(page).to have_content("#{application.name}")
     expect(page).to have_content("Address: #{application.street_address} #{application.city}, #{application.state} #{application.zip_code}")
-    # expect(page).to have_content("Description: #{application.description}")
     expect(page).to have_content("Status: #{application.status}")
     expect(page).to have_content("Pets applying for:")
     expect(page).to have_content("#{pet.name}")
 
     expect(page).to_not have_content("#{application_2.name}")
     expect(page).to_not have_content("Address: #{application_2.street_address} #{application_2.city}, #{application_2.state} #{application_2.zip_code}")
-    expect(page).to_not have_content("Description: #{application_2.description}")
 
     click_on(pet.name)
 

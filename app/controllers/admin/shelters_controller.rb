@@ -1,5 +1,6 @@
 class Admin::SheltersController < ApplicationController
   def index
-    @shelters = Shelter.all
+    @sorted_shelters = Shelter.reverse_alpha
+    @pending_shelters = Shelter.filter_status('Pending')
   end
 end
