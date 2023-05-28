@@ -3,8 +3,8 @@ require "rails_helper"
 RSpec.describe "/admin/applications/:id, admin-show page" do
   #shelter1
   let!(:shelter_1) { Shelter.create!(name: "Aurora shelter", city: "Aurora, CO", foster_program: false, rank: 9)}
-  let!(:pet_1) { shelter_1.pets.create!(name: "Scooby", age: 2, breed: "Great Dane", adoptable: true) }
-  let!(:application) { Application.create!(name: "Ringo Starr", street_address: "123 Canyon Blvd.", city: "Boulder", state: "CO", zip_code: "80304", description: "I just love pets so much!", status: "Pending") }
+  let!(:pet_1) { shelter_1.pets.create!(name: "Bingo", age: 2, breed: "Great Dane", adoptable: true) }
+  let!(:application) { Application.create!(name: "Starr Boy", street_address: "123 Canyon Blvd.", city: "Boulder", state: "CO", zip_code: "80304", description: "I just love pets so much!", status: "Pending") }
   let!(:petapp_1) { PetApplication.create!(pet: pet_1, application: application) }
   let!(:petapp_2) { PetApplication.create!(pet: pet_2, application: application) }
   
