@@ -76,4 +76,45 @@ RSpec.describe "/admin/applications/:id, admin-show page" do
 
     expect(page).to have_content("Status: Approved")
   end
+
+  it "can update an applications status to rejected" do
+    visit "/admin/applications/#{application.id}"
+
+    within "#applying-for-#{pet_1.id}" do
+      expect(page).to have_button("Approve Application for #{pet_1.name}")
+      expect(page).to have_button("Reject Application for #{pet_1.name}")
+    end
+
+    within "#applying-for-#{pet_2.id}" do
+      expect(page).to have_button("Approve Application for #{pet_2.name}")
+      expect(page).to have_button("Reject Application for #{pet_2.name}")
+    end
+
+    find("#applying-for-#{pet_1.id}").click_button("Approve Application for #{pet_1.name}")
+    find("#applying-for-#{pet_2.id}").click_button("Reject Application for #{pet_2.name}")
+
+    expect(current_path).to eq("/admin/applications/#{application.id}")
+
+    expect(page).to have_content("Status: Rejected")
+  end
+
+  it "won't update an applications status if all decisions aren't made" do
+    visit "/admin/applications/#{application.id}"
+
+    within "#applying-for-#{pet_1.id}" do
+      expect(page).to have_button("Approve Application for #{pet_1.name}")
+      expect(page).to have_button("Reject Application for #{pet_1.name}")
+    end
+
+    within "#applying-for-#{pet_2.id}" do
+      expect(page).to have_button("Approve Application for #{pet_2.name}")
+      expect(page).to have_button("Reject Application for #{pet_2.name}")
+    end
+
+    find("#applying-for-#{pet_1.id}").click_button("Approve Application for #{pet_1.name}")
+
+    expect(current_path).to eq("/admin/applications/#{application.id}")
+
+    expect(page).to have_content("Status: Pending")
+  end
 end
