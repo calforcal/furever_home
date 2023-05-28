@@ -13,5 +13,16 @@ RSpec.describe Application, type: :model do
     it "can return the pet application for a specific pet and app id" do
       expect(application.find_pet_app(pet_1.id)).to eq(petapp_1)
     end
+
+    it "can check pet applications to see if decisions were made and update the status of the application" do
+
+      application.update_status
+      expect(application.status).to eq("Pending")
+
+      petapp_1.update(pet_status: "Approved")
+      application.update_status
+
+      expect(application.status).to eq("Approved")
+    end
   end
 end
