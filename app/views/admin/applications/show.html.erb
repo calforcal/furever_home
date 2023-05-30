@@ -4,7 +4,7 @@
 <h4>Pets applying for:</h4>
 <% @application.pets.each do |pet| %>
   <% pet_app = @application.find_pet_app(pet.id) %>
-  <% if pet_app.pet_status == "Pending Adoption" %>
+  <% if pet_app.pet_status == "Pending Adoption" && pet_app.pet.adoptable == true %>
     <div id="applying-for-<%= pet.id %>">
       <%= link_to pet.name, "/pets/#{pet.id}" %>
       <%= render partial: 'form', locals: { 
@@ -21,7 +21,7 @@
                                             button_text: "Reject Application for #{pet.name}"
       } %>
     </div>
-  <% elsif pet_app.pet_status == "Approved" || pet_app.pet_status == "Rejected" %>
+  <% elsif pet_app.pet_status == "Approved" || pet_app.pet_status == "Rejected" && pet_app.pet.adoptable == true %>
     <div id="decision-for-<%= pet.id %>">
       <%= link_to pet.name, "/pets/#{pet.id}" %>
       <p><%= pet_app.pet_status %> for Adoption</p>

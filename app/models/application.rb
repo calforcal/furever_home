@@ -14,6 +14,10 @@ class Application < ApplicationRecord
     approved = self.pet_applications.where(pet_status: 'Approved').any?
     if pending != true && rejected != true && approved == true
       self.update(status: "Approved")
+      self.pet_applications.each do |app|
+        pet = Pet.find_pet(app.pet_id)
+        pet.update_adoptability
+      end
     elsif rejected == true
       self.update(status: "Rejected")
     end
