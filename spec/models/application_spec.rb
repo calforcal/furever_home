@@ -50,5 +50,20 @@ RSpec.describe Application, type: :model do
 
       expect(application.status).to eq("Pending")
     end
+
+    it "makes a pet unadoptable when an application is accepted" do
+      expect(application.status).to eq("Pending")
+
+      petapp_1.update(pet_status: "Approved")
+      petapp_2.update(pet_status: "Approved")
+      application.update_status
+      pet_1.update_adoptability
+      pet_2.update_adoptability
+
+      expect(application.status).to eq("Approved")
+
+      expect(pet_1.adoptable).to be(false)
+      expect(pet_2.adoptable).to be(false)
+    end
   end
 end
